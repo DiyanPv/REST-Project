@@ -3,6 +3,7 @@ const post = require("../models/post");
 const Post = require(`../models/post`);
 const fs = require(`fs`);
 const path = require(`path`);
+const { body } = require(`express-validator/check`);
 exports.getPosts = (req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 2;

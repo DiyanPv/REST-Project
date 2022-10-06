@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require(`mongoose`);
 const path = require(`path`);
 const feedRoutes = require("./routes/posts");
+const authroutes = require("./routes/auth");
 const { v4: uuidv4 } = require("uuid");
 const multer = require(`multer`);
 const app = express();
@@ -32,12 +33,17 @@ const fileFilter = (req, file, cb) => {
   }
 };
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+  );
   next();
 });
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single(`image`));
@@ -49,6 +55,7 @@ app.use((error, req, res, next) => {
   res.status(status).json(message);
 });
 app.use("/feed", feedRoutes);
+app.use("/auth", authroutes);
 mongoose
   .connect(`mongodb+srv://peter:88888888@cluster.4rlz1th.mongodb.net/messages`)
   .then((result) => {
