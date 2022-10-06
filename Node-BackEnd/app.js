@@ -44,6 +44,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
   );
+  res.setHeader("Access-Control-Allow-Headers", `Content-Type, Authorization`);
   next();
 });
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single(`image`));
