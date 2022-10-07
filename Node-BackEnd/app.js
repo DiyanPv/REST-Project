@@ -5,9 +5,9 @@ const path = require(`path`);
 const feedRoutes = require("./routes/posts");
 const authroutes = require("./routes/auth");
 const { v4: uuidv4 } = require("uuid");
+const socketio = require(`socket.io`);
 const multer = require(`multer`);
 const app = express();
-
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(bodyParser.json()); // application/json
 app.use("/images", express.static(path.join(__dirname, "images")));
@@ -61,6 +61,9 @@ mongoose
   .connect(`mongodb+srv://peter:88888888@cluster.4rlz1th.mongodb.net/messages`)
   .then((result) => {
     console.log(`connected`);
-    app.listen(8080);
+    const server = app.listen(8080);
+    socketio(server);
+    const io = require("./middleware/socket").init(server);
+
   })
   .catch((err) => console.log(err));
