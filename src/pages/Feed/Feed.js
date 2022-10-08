@@ -183,7 +183,6 @@ class Feed extends Component {
       body: formData,
       headers: {
         Authorization: "Bearer " + this.props.token,
-        "Content-Type": "application/json",
       },
     })
       .then((res) => {
